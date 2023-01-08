@@ -1,0 +1,6 @@
+{
+  "ID_OR_PASSWORD_WRONG": "ID나 PASSWORD가 바르지 않습니다.",
+  "ID_DUPLICATE": "이미 사용중인 ID입니다.",
+  "TOKEN_WRONG": "토큰이 바르지 않습니다.",
+  "RECAPTCHA_WRONG": "RECAPTCHA가 바르지 않습니다."
+}
