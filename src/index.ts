@@ -164,21 +164,3 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 app.listen(process.env["WEB_PORT"], () => {
   console.log(`The program is running on port ${process.env["WEB_PORT"]}`);
 });
-
-// (async () => {
-//   const refreshToken = await generation.createRefreshToken("smile", 20);
-//   const accessToken = await generation.createAccessToken(refreshToken, 30);
-
-//   if (!accessToken) throw new Error("Access token error");
-
-//   console.log(generation.tokenToString(refreshToken));
-//   console.log(generation.tokenToString(accessToken));
-
-//   generation.addGeneration("smile"); //Disable refresh token
-
-//   //It will be null
-//   const accessToken2 = await generation.createAccessToken(refreshToken, 30);
-//   console.log(accessToken2);
-
-//   generation.close();
-// })();
