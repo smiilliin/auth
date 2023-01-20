@@ -5,7 +5,7 @@ import { addDays, addMinutes } from "./time";
 
 interface IToken {
   type: string;
-  expires: string;
+  expires: number;
 }
 interface IRefreshToken extends IToken {
   id: string;
@@ -60,7 +60,7 @@ class TokenGeneration {
   async createRefreshToken(id: string, days: number): Promise<IRefreshToken> {
     const refreshToken: IRefreshToken = {
       type: "refresh",
-      expires: addDays(days).toUTCString(),
+      expires: addDays(days).getTime(),
       id: id,
       generation: await this.getGeneration(id),
     };
@@ -68,7 +68,7 @@ class TokenGeneration {
   }
   async updateRefreshToken(token: IRefreshToken, days: number): Promise<IRefreshToken | null> {
     if (!(await this.checkGeneration(token))) return null;
-    token.expires = addDays(days).toUTCString();
+    token.expires = addDays(days).getTime();
 
     return token;
   }
@@ -78,7 +78,7 @@ class TokenGeneration {
 
     const accessToken: IAccessToken = {
       type: "access",
-      expires: addMinutes(minutes).toUTCString(),
+      expires: addMinutes(minutes).getTime(),
       id: id,
     };
 
@@ -90,7 +90,7 @@ class TokenGeneration {
   private verifyToken(tokenString: string): IToken | null {
     try {
       const token = jwt.verify(tokenString, this.hmacKey) as IToken;
-      if (new Date(token.expires) < new Date()) return null;
+      if (token.expires > new Date().getTime()) return null;
       return token;
     } catch (e) {
       return null;
