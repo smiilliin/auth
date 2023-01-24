@@ -72,7 +72,7 @@ app.post("/login", async (req, res) => {
 
     if (dbPassword.equals(Buffer.from(hashedPassword, "hex"))) {
       return res.status(200).send({
-        refrehToken: generation.tokenToString(await generation.createRefreshToken(id, 20)),
+        "refreh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
       });
     }
 
@@ -106,7 +106,7 @@ app.post("/signup", async (req, res) => {
     await dbQuery(`INSERT INTO USER VALUES("${id}", 0x${salt.toString("hex")}, 0x${hashedPassword});`);
 
     return res.status(200).send({
-      refrehToken: generation.tokenToString(await generation.createRefreshToken(id, 20)),
+      "refreh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
     });
   } catch {
     return res.status(400).send({
@@ -132,7 +132,7 @@ app.get("/access-token", async (req, res) => {
     });
   }
   return res.status(200).send({
-    accessToken: generation.tokenToString(accessToken),
+    "access-token": generation.tokenToString(accessToken),
   });
 });
 app.get("/refresh-token", async (req, res) => {
@@ -152,7 +152,7 @@ app.get("/refresh-token", async (req, res) => {
   }
 
   return res.status(200).send({
-    refreshToken: generation.tokenToString(updatedToken),
+    "refresh-token": generation.tokenToString(updatedToken),
   });
 });
 
