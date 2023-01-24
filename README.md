@@ -14,7 +14,7 @@ DB_HOST=localhost
 DB_PASSWORD=
 DB_DATABASE=web
 WEB_PORT=3000
-RECAPTCHA_KEY=
+PUBLIC_RECAPTCHA_KEY=
 ```
 
 ## Run
@@ -23,12 +23,17 @@ RECAPTCHA_KEY=
 npx nodemon
 ```
 
+or
+
+```
+npm run start
+```
+
 ## API
 
 ### POST /signup
 
-Signup  
-Request example
+Signup Request example
 
 ```json
 {
@@ -48,8 +53,7 @@ Response example
 
 ### POST /login
 
-Login  
-Request example
+Login Request example
 
 ```json
 {
@@ -68,12 +72,11 @@ Response example
 
 ### GET /access-token
 
-Get access token with refresh token  
-Request example
+Get access token Request example
 
 ```
 [headers]
-Authorization: (refresh token)
+Authorization: $(refresh token)
 ```
 
 Response example
@@ -86,11 +89,11 @@ Response example
 
 ### GET /refresh-token
 
-Update refresh token
+Update refresh token Request example
 
 ```
 [headers]
-Authorization: (refresh token)
+Authorization: $(refresh-token)
 ```
 
 Response example
