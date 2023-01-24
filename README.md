@@ -42,7 +42,7 @@ Response example
 
 ```json
 {
-  "refrehToken": "" //refresh token
+  "refreh-token": "" //refresh token
 }
 ```
 
@@ -62,7 +62,7 @@ Response example
 
 ```json
 {
-  "refrehToken": "" //refresh token
+  "refreh-token": "" //refresh token
 }
 ```
 
@@ -80,7 +80,7 @@ Response example
 
 ```json
 {
-  "accessToken": "" //access token
+  "access-token": "" //access token
 }
 ```
 
@@ -97,6 +97,6 @@ Response example
 
 ```json
 {
-  "refreshToken": "" //refresh token
+  "refresh-token": "" //refresh token
 }
 ```
