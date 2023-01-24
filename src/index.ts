@@ -116,7 +116,7 @@ app.post("/signup", async (req, res) => {
     dbConnection.release();
   }
 });
-app.get("/access", async (req, res) => {
+app.get("/access-token", async (req, res) => {
   const tokenString = req.headers.authorization;
   const token = generation.verifyRefreshToken(tokenString);
 
@@ -135,7 +135,7 @@ app.get("/access", async (req, res) => {
     accessToken: generation.tokenToString(accessToken),
   });
 });
-app.get("/refresh", async (req, res) => {
+app.get("/refresh-token", async (req, res) => {
   const tokenString = req.headers.authorization;
   const token = generation.verifyRefreshToken(tokenString);
   if (!token) {
