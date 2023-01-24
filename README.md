@@ -66,7 +66,7 @@ Response example
 }
 ```
 
-### GET /access
+### GET /access-token
 
 Get access token with refresh token  
 Request example
@@ -84,7 +84,7 @@ Response example
 }
 ```
 
-### GET /refresh
+### GET /refresh-token
 
 Update refresh token
 
