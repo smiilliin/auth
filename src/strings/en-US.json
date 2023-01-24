@@ -1,0 +1,6 @@
+{
+  "ID_OR_PASSWORD_WRONG": "the ID or PASSWORD is wrong.",
+  "ID_DUPLICATE": "the ID is duplicated.",
+  "TOKEN_WRONG": "Token is wrong.",
+  "RECAPTCHA_WRONG": "the RECAPTCHA is wrong."
+}

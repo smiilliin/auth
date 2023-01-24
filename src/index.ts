@@ -6,6 +6,7 @@ import express from "express";
 import mysql from "mysql";
 import util from "util";
 import { checkRecaptcha } from "./recaptcha";
+import Strings from "./strings";
 
 dotenv.config();
 
@@ -155,6 +156,9 @@ app.get("/refresh-token", async (req, res) => {
     "refresh-token": generation.tokenToString(updatedToken),
   });
 });
+
+const strings = new Strings();
+strings.use(app);
 
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error(err);
