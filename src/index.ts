@@ -73,7 +73,7 @@ app.post("/login", async (req, res) => {
 
     if (dbPassword.equals(Buffer.from(hashedPassword, "hex"))) {
       return res.status(200).send({
-        "refreh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
+        "refresh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
       });
     }
 
@@ -107,7 +107,7 @@ app.post("/signup", async (req, res) => {
     await dbQuery(`INSERT INTO USER VALUES("${id}", 0x${salt.toString("hex")}, 0x${hashedPassword});`);
 
     return res.status(200).send({
-      "refreh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
+      "refresh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
     });
   } catch {
     return res.status(400).send({
