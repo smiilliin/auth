@@ -1,5 +1,3 @@
-import https from "https";
-
 const checkRecaptcha = (g_response: string): Promise<boolean> => {
   return new Promise<boolean>((resolve) => {
     fetch("https://www.google.com/recaptcha/api/siteverify", {
