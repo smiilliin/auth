@@ -25,8 +25,6 @@ const dbConfig = {
 };
 const pool = mysql.createPool(dbConfig);
 
-const getDBConnection = util.promisify(pool.getConnection).bind(pool);
-
 const generation = new TokenGeneration(dbConfig, hmacKey);
 
 const app = express();
