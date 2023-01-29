@@ -47,6 +47,11 @@ interface IUserQuery {
   password: Buffer;
 }
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.post("/login", async (req, res) => {
   const { id, password } = req.body;
 
