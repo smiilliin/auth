@@ -141,10 +141,11 @@ app.post("/login", async (req, res) => {
 });
 app.post("/signup", async (req, res) => {
   const { id, password, g_response } = req.body;
-  if (!(await checkRecaptcha(g_response)))
+  if (!(await checkRecaptcha(g_response))) {
     return res.status(400).send({
       reason: "RECAPTCHA_WRONG",
     });
+  }
 
   if (!idRegex(id) || !passwordRegex(password)) {
     return res.status(400).send({
@@ -152,25 +153,56 @@ app.post("/signup", async (req, res) => {
     });
   }
 
-  const dbConnection = await getDBConnection();
-  try {
-    const dbQuery = util.promisify(dbConnection.query).bind(dbConnection);
-    const salt = crypto.randomBytes(8);
-    const saltedPassword = Buffer.concat([salt, Buffer.from(password, "hex")]);
-    const hashedPassword = crypto.createHash("sha256").update(saltedPassword).digest("hex");
+  pool.getConnection((err, connection) => {
+    try {
+      if (err) {
+        return res.status(400).send({
+          reason: "UNKNOWN_ERROR",
+        });
+      }
 
-    await dbQuery(`INSERT INTO USER VALUES("${id}", 0x${salt.toString("hex")}, 0x${hashedPassword});`);
+      const salt = crypto.randomBytes(8);
+      const saltedPassword = Buffer.concat([salt, Buffer.from(password, "hex")]);
+      const hashedPassword = crypto.createHash("sha256").update(saltedPassword).digest("hex");
 
-    return res.status(200).send({
-      "refresh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
-    });
-  } catch {
-    return res.status(400).send({
-      reason: "ID_DUPLICATE",
-    });
-  } finally {
-    dbConnection.release();
-  }
+      connection.query(
+        `INSERT INTO USER VALUES(?, ?, ?);`,
+        [id, salt, Buffer.from(hashedPassword, "hex")],
+        async (err) => {
+          if (err) {
+            return res.status(400).send({
+              reason: "ID_DUPLICATE",
+            });
+          } else {
+            return res.status(200).send({
+              "refresh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
+            });
+          }
+        }
+      );
+    } finally {
+      connection.release();
+    }
+  });
+  // const dbConnection = await getDBConnection();
+  // try {
+  //   const dbQuery = util.promisify(dbConnection.query).bind(dbConnection);
+  //   const salt = crypto.randomBytes(8);
+  //   const saltedPassword = Buffer.concat([salt, Buffer.from(password, "hex")]);
+  //   const hashedPassword = crypto.createHash("sha256").update(saltedPassword).digest("hex");
+
+  //   await dbQuery(`INSERT INTO USER VALUES("${id}", 0x${salt.toString("hex")}, 0x${hashedPassword});`);
+
+  //   return res.status(200).send({
+  //     "refresh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
+  //   });
+  // } catch {
+  //   return res.status(400).send({
+  //     reason: "ID_DUPLICATE",
+  //   });
+  // } finally {
+  //   dbConnection.release();
+  // }
 });
 app.get("/access-token", async (req, res) => {
   const tokenString = req.headers.authorization;
