@@ -1,4 +1,5 @@
 {
+  "UNKNOWN_ERROR": "An unknown error has occurred.",
   "ID_OR_PASSWORD_WRONG": "the ID or PASSWORD is wrong.",
   "ID_DUPLICATE": "the ID is duplicated.",
   "TOKEN_WRONG": "Token is wrong.",
