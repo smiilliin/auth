@@ -48,15 +48,6 @@ interface IUserQuery {
   password: Buffer;
 }
 
-const apiLimiter = rateLimit({
-  windowMs: 30 * 1000, // 30 seconds
-  max: 10, // 10 Requests
-  standardHeaders: false,
-  legacyHeaders: false,
-});
-
-app.use(apiLimiter);
-
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   next();
