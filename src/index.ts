@@ -11,10 +11,6 @@ import rateLimit from "express-rate-limit";
 
 dotenv.config();
 
-// const hmacKey = crypto.randomBytes(32); //HMAC KEY
-
-// fs.writeFileSync("../hmacKey", hmacKey.toString("hex"));
-
 const hmacKey = Buffer.from(fs.readFileSync("../hmacKey").toString(), "hex"); //HMAC KEY
 
 const dbConfig = {
@@ -99,34 +95,6 @@ app.post("/login", async (req, res) => {
       connection.release();
     }
   });
-
-  // const dbConnection = await getDBConnection();
-  // try {
-  //   const dbQuery = util.promisify(dbConnection.query).bind(dbConnection);
-
-  //   const userQuery: Array<IUserQuery> = (await dbQuery(`SELECT * FROM user WHERE id="${id}"`)) as Array<IUserQuery>;
-  //   if (userQuery.length == 0) {
-  //     return res.status(400).send({
-  //       reason: "ID_OR_PASSWORD_WRONG",
-  //     });
-  //   }
-  //   const { salt, password: dbPassword } = userQuery[0];
-
-  //   const saltedPassword = Buffer.concat([salt, Buffer.from(password, "hex")]);
-  //   const hashedPassword = crypto.createHash("sha256").update(saltedPassword).digest("hex");
-
-  //   if (dbPassword.equals(Buffer.from(hashedPassword, "hex"))) {
-  //     return res.status(200).send({
-  //       "refresh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
-  //     });
-  //   }
-
-  //   return res.status(400).send({
-  //     reason: "ID_OR_PASSWORD_WRONG",
-  //   });
-  // } finally {
-  //   dbConnection.release();
-  // }
 });
 app.post("/signup", async (req, res) => {
   const { id, password, g_response } = req.body;
@@ -173,25 +141,6 @@ app.post("/signup", async (req, res) => {
       connection.release();
     }
   });
-  // const dbConnection = await getDBConnection();
-  // try {
-  //   const dbQuery = util.promisify(dbConnection.query).bind(dbConnection);
-  //   const salt = crypto.randomBytes(8);
-  //   const saltedPassword = Buffer.concat([salt, Buffer.from(password, "hex")]);
-  //   const hashedPassword = crypto.createHash("sha256").update(saltedPassword).digest("hex");
-
-  //   await dbQuery(`INSERT INTO USER VALUES("${id}", 0x${salt.toString("hex")}, 0x${hashedPassword});`);
-
-  //   return res.status(200).send({
-  //     "refresh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
-  //   });
-  // } catch {
-  //   return res.status(400).send({
-  //     reason: "ID_DUPLICATE",
-  //   });
-  // } finally {
-  //   dbConnection.release();
-  // }
 });
 app.get("/access-token", async (req, res) => {
   const tokenString = req.headers.authorization;
