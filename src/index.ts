@@ -7,7 +7,6 @@ import mysql from "mysql";
 import util from "util";
 import { checkRecaptcha } from "./recaptcha";
 import Strings from "./strings";
-import rateLimit from "express-rate-limit";
 
 dotenv.config();
 
