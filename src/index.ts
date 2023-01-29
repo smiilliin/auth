@@ -4,7 +4,6 @@ import fs from "fs";
 import dotenv from "dotenv";
 import express from "express";
 import mysql from "mysql";
-import util from "util";
 import { checkRecaptcha } from "./recaptcha";
 import Strings from "./strings";
 
