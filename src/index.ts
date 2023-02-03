@@ -1,4 +1,4 @@
-import TokenGeneration from "./generation";
+import TokenGeneration from "token-generation";
 import crypto from "crypto";
 import fs from "fs";
 import dotenv from "dotenv";
@@ -80,8 +80,16 @@ app.post("/login", async (req, res) => {
         const hashedPassword = crypto.createHash("sha256").update(saltedPassword).digest("hex");
 
         if (dbPassword.equals(Buffer.from(hashedPassword, "hex"))) {
-          return res.status(200).send({
-            "refresh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
+          const refreshToken = await generation.createRefreshToken(id, 20);
+
+          if (refreshToken) {
+            return res.status(200).send({
+              "refresh-token": generation.tokenToString(refreshToken),
+            });
+          }
+
+          return res.status(400).send({
+            reason: "UNKNOWN_ERROR",
           });
         }
 
@@ -128,11 +136,18 @@ app.post("/signup", async (req, res) => {
             return res.status(400).send({
               reason: "ID_DUPLICATE",
             });
-          } else {
+          }
+          const refreshToken = await generation.createRefreshToken(id, 20);
+
+          if (refreshToken) {
             return res.status(200).send({
-              "refresh-token": generation.tokenToString(await generation.createRefreshToken(id, 20)),
+              "refresh-token": generation.tokenToString(refreshToken),
             });
           }
+
+          return res.status(400).send({
+            reason: "UNKNOWN_ERROR",
+          });
         }
       );
     } finally {
