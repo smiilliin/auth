@@ -1,21 +1,19 @@
 import TokenGeneration from "token-generation";
 import crypto from "crypto";
 import fs from "fs";
-import dotenv from "dotenv";
 import express from "express";
 import mysql from "mysql";
 import { checkRecaptcha } from "./recaptcha";
 import Strings from "./strings";
-
-dotenv.config();
+import { env } from "./env";
 
 const hmacKey = Buffer.from(fs.readFileSync("../hmacKey").toString(), "hex"); //HMAC KEY
 
 const dbConfig = {
-  host: process.env["DB_HOST"],
-  user: process.env["DB_USER"],
-  password: process.env["DB_PASSWORD"],
-  database: process.env["DB_DATABASE"],
+  host: env.db_host,
+  user: env.db_user,
+  password: env.db_password,
+  database: env.db_database,
 };
 const pool = mysql.createPool(dbConfig);
 
@@ -205,6 +203,6 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   });
 });
 
-app.listen(process.env["WEB_PORT"], () => {
-  console.log(`The program is running on port ${process.env["WEB_PORT"]}`);
+app.listen(env.port, () => {
+  console.log(`The program is running on port ${env.port}`);
 });
