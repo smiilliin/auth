@@ -12,7 +12,7 @@ const env = {
 };
 
 new Map(Object.entries(env)).forEach((value, key) => {
-  if (!value) {
+  if (value === undefined) {
     throw new Error(`${key} not defined`);
   }
 });
