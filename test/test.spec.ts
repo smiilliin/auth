@@ -12,7 +12,7 @@ describe(`AUTH`, async () => {
   });
 
   let refreshToken: string;
-  it(`Get Refresh Token`, async () => {
+  it(`Login`, async () => {
     const res = await fetch(`${env.host}/login`, {
       method: "POST",
       headers: {
@@ -41,7 +41,6 @@ describe(`AUTH`, async () => {
     const res = await fetch(`${env.host}/access-token`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Authorization: refreshToken,
       },
     });
@@ -63,7 +62,6 @@ describe(`AUTH`, async () => {
     const res = await fetch(`${env.host}/refresh-token`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Authorization: refreshToken,
       },
     });
