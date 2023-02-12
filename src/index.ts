@@ -104,11 +104,11 @@ app.post("/login", async (req, res) => {
 });
 app.post("/signup", async (req, res) => {
   const { id, password, g_response } = req.body;
-  // if (!(await checkRecaptcha(g_response))) {
-  //   return res.status(400).send({
-  //     reason: "RECAPTCHA_WRONG",
-  //   });
-  // }
+  if (!(await checkRecaptcha(g_response))) {
+    return res.status(400).send({
+      reason: "RECAPTCHA_WRONG",
+    });
+  }
 
   if (!idRegex(id) || !passwordRegex(password)) {
     return res.status(400).send({
@@ -135,7 +135,6 @@ app.post("/signup", async (req, res) => {
         [id, salt, Buffer.from(hashedPassword, "hex")],
         async (err) => {
           if (err) {
-            console.error(err);
             return res.status(400).send({
               reason: "ID_DUPLICATE",
             });
