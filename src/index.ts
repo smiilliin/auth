@@ -26,10 +26,10 @@ app.set("etag", false);
 app.disable("x-powered-by");
 
 const idRegex = (id: string) => {
-  return /^[a-z0-9]{5,20}$/.test(id);
+  return typeof id === "string" && /^[a-z0-9]{5,20}$/.test(id);
 };
 const passwordRegex = (password: string) => {
-  return /^[a-fA-F0-9]{64}$/.test(password);
+  return typeof password === "string" && /^[a-fA-F0-9]{64}$|^0x[a-fA-F0-9]{64}$/.test(password);
 };
 
 interface IUserQuery {
