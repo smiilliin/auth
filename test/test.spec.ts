@@ -2,81 +2,24 @@ import assert from "assert";
 import dotenv from "dotenv";
 import { env } from "./env";
 import crypto from "crypto";
+import AuthAPI from "./authAPI";
 
 dotenv.config({ path: ".test.env" });
 
+const authAPI = new AuthAPI(env.lang, env.host);
 describe(`AUTH`, async () => {
-  let strings: any;
-  it(`Get Strings`, async () => {
-    strings = await (await fetch(`${env.host}/strings/${env.lang}`)).json();
-  });
-
   let refreshToken: string;
   it(`Login`, async () => {
-    const res = await fetch(`${env.host}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: env.id,
-        password: crypto.createHash("sha256").update(Buffer.from(env.password, "utf-8")).digest("hex"),
-      }),
-    });
-    const data = await res.json();
-
-    if (res.status !== 200) {
-      const { reason } = data;
-
-      if (reason) {
-        throw new Error(strings[reason]);
-      }
-      throw new Error(strings["UNKNOWN_ERROR"]);
-    } else {
-      refreshToken = data["refresh-token"];
-      assert(refreshToken);
-    }
+    const data = await authAPI.login(env.id, env.password);
+    refreshToken = data["refresh-token"];
+    assert(refreshToken);
   });
   it(`Get Access Token`, async () => {
-    const res = await fetch(`${env.host}/access-token`, {
-      method: "GET",
-      headers: {
-        Authorization: refreshToken,
-      },
-    });
-    const data = await res.json();
-
-    if (res.status !== 200) {
-      const { reason } = data;
-
-      if (reason) {
-        throw new Error(strings[reason]);
-      }
-      throw new Error(strings["UNKNOWN_ERROR"]);
-    } else {
-      const accessToken = data["access-token"];
-      assert(accessToken);
-    }
+    const { "access-token": accessToken } = await authAPI.getAccessToken(refreshToken);
+    assert(accessToken);
   });
   it(`Update Refresh Token`, async () => {
-    const res = await fetch(`${env.host}/refresh-token`, {
-      method: "GET",
-      headers: {
-        Authorization: refreshToken,
-      },
-    });
-    const data = await res.json();
-
-    if (res.status !== 200) {
-      const { reason } = data;
-
-      if (reason) {
-        throw new Error(strings[reason]);
-      }
-      throw new Error(strings["UNKNOWN_ERROR"]);
-    } else {
-      refreshToken = data["refresh-token"];
-      assert(refreshToken);
-    }
+    const { "refresh-token": newRefreshToken } = await authAPI.getRefreshToken(refreshToken);
+    assert(newRefreshToken);
   });
 });
