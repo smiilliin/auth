@@ -1,4 +1,4 @@
-# Auth
+# Auth-back - Auth Backend
 
 ## Install
 
@@ -10,23 +10,11 @@ npm install
 
 ```
 DB_USER=smile
-DB_HOST=localhost
+DB_HOST=127.0.0.1
 DB_PASSWORD=
 DB_DATABASE=web
 PORT=3000
 PUBLIC_RECAPTCHA_KEY=
-```
-
-## Run
-
-```bash
-npx nodemon
-```
-
-or
-
-```
-npm run start
 ```
 
 ## API
@@ -57,8 +45,8 @@ Login Request example
 
 ```json
 {
-    "id": "smile"
-    "password": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+  "id": "smile"
+  "password": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
 }
 ```
 
