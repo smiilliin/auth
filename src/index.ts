@@ -159,6 +159,7 @@ app.post("/signup", async (req, res) => {
 });
 app.get("/access-token", async (req, res) => {
   const tokenString = req.headers.authorization;
+  console.log(tokenString);
   const token = generation.verifyRefreshToken(tokenString);
 
   if (!token) {
