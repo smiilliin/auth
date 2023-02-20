@@ -1,4 +1,4 @@
-# Auth-back - Auth Backend
+# Auth - Authentication
 
 ## Install
 
