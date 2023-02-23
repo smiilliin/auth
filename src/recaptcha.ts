@@ -5,7 +5,7 @@ const checkRecaptcha = (g_response: string): Promise<boolean> => {
     fetch("https://www.google.com/recaptcha/api/siteverify", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `secret=${env.public_recaptcha_key}&response=${g_response}`,
+      body: `secret=${env.recaptcha_key}&response=${g_response}`,
     })
       .then((res) => {
         res.json().then((json) => {
