@@ -39,8 +39,10 @@ interface IUserQuery {
 }
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, PUT, PATCH");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
 
@@ -84,8 +86,16 @@ app.post("/login", async (req, res) => {
           const refreshToken = await generation.createRefreshToken(id, 20);
 
           if (refreshToken) {
+            const refreshTokenString = generation.tokenToString(refreshToken);
+
+            res.cookie("refresh-token", refreshTokenString, {
+              httpOnly: true,
+              domain: env.cookie_domain,
+              secure: true,
+            });
+
             return res.status(200).send({
-              "refresh-token": generation.tokenToString(refreshToken),
+              "refresh-token": refreshTokenString,
             });
           }
 
@@ -143,8 +153,16 @@ app.post("/signup", async (req, res) => {
           const refreshToken = await generation.createRefreshToken(id, 20);
 
           if (refreshToken) {
+            const refreshTokenString = generation.tokenToString(refreshToken);
+
+            res.cookie("refresh-token", refreshTokenString, {
+              httpOnly: true,
+              domain: env.cookie_domain,
+              secure: true,
+            });
+
             return res.status(200).send({
-              "refresh-token": generation.tokenToString(refreshToken),
+              "refresh-token": refreshTokenString,
             });
           }
 
@@ -160,7 +178,6 @@ app.post("/signup", async (req, res) => {
 });
 app.get("/access-token", async (req, res) => {
   const tokenString = req.headers.authorization;
-  console.log(tokenString);
   const token = generation.verifyRefreshToken(tokenString);
 
   if (!token) {
@@ -194,8 +211,16 @@ app.get("/refresh-token", async (req, res) => {
     });
   }
 
+  const updatedTokenString = generation.tokenToString(updatedToken);
+
+  res.cookie("refresh-token", updatedTokenString, {
+    httpOnly: true,
+    domain: env.cookie_domain,
+    secure: true,
+  });
+
   return res.status(200).send({
-    "refresh-token": generation.tokenToString(updatedToken),
+    "refresh-token": updatedTokenString,
   });
 });
 
