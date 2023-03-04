@@ -10,6 +10,7 @@ const env = {
   port: Number(process.env.PORT),
   recaptcha_key: process.env.RECAPTCHA_KEY as string,
   cookie_domain: process.env.COOKIE_DOMAIN as string,
+  origin_default: process.env.ORIGIN_DEFAULT as string,
 };
 
 new Map(Object.entries(env)).forEach((value, key) => {

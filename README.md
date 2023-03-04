@@ -15,6 +15,8 @@ DB_PASSWORD=
 DB_DATABASE=web
 PORT=3000
 RECAPTCHA_KEY=
+COOKIE_DOMAIN=.smiilliin.site
+ORIGIN_DEFAULT=https://smiilliin.site
 ```
 
 ## API
