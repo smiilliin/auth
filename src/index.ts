@@ -176,6 +176,11 @@ app.post("/signup", async (req, res) => {
     }
   });
 });
+app.get("/logout", (req, res) => {
+  res.clearCookie("refresh-token", { httpOnly: true, expires: new Date(1), domain: env.cookie_domain, secure: true });
+
+  res.status(200).send({});
+});
 app.get("/access-token", async (req, res) => {
   const tokenString = req.headers.authorization;
   const token = generation.verifyRefreshToken(tokenString);

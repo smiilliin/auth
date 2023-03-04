@@ -39,7 +39,7 @@ Response example
 }
 ```
 
-### POST /login
+### GET /login
 
 Login Request example
 
@@ -56,6 +56,14 @@ Response example
 {
   "refreh-token": ""
 }
+```
+
+### POST /logout
+
+Delete refresh token
+
+```json
+{}
 ```
 
 ### GET /access-token
